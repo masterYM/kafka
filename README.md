@@ -4,8 +4,13 @@ sh kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --gr
 
 
 生产：sh kafka-console-producer.sh --broker-list localhost:9092 --topic test
+
+bin/kafka-server-start.sh -daemon config/server.properties
+
+./kafka-topics.sh --list --zookeeper localhost:2181
+
  
- 
+bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic test
  
 nohup  bin/kafka-server-start.sh config/server.properties 1>/dev/null 2>&1 &
 
