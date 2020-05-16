@@ -10,8 +10,9 @@ import org.apache.kafka.common.TopicPartition;
 
 public class MsgConsumer {
 	public static void main(String[] args) {
+		//cdh-datanode1:9092,cdh-datanode2:9092,cdh-datanode3:9092
 		Properties props = new Properties();
-		props.put("bootstrap.servers", "119.27.183.30:9092");
+		props.put("bootstrap.servers", "cdh-datanode1:9092,cdh-datanode2:9092,cdh-datanode3:9092");
 		// 消费分组名
 		props.put("group.id", "testGroup");
 		// 是否自动提交offset
@@ -23,7 +24,7 @@ public class MsgConsumer {
 		props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 		KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
 		// 消费主题
-		consumer.subscribe(Arrays.asList("topic-replica-dl"));
+		consumer.subscribe(Arrays.asList("topic-replica-dl-1"));
 		// 消费指定分区
 		//consumer.assign(Arrays.asList(new TopicPartition("topic-replica-dl", 0)));
 		while (true) {

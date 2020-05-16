@@ -13,20 +13,20 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 public class MsgProducer {
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		Properties props = new Properties();
-		props.put("bootstrap.servers", "119.27.183.30:9092");
+		//cdh-datanode1:9092,cdh-datanode2:9092,cdh-datanode3:9092
+		props.put("bootstrap.servers", "cdh-datanode1:9092,cdh-datanode2:9092,cdh-datanode3:9092");
 		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 		props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
 		Producer<String, String> producer = new KafkaProducer<>(props); 
 		for (int i = 0; i < 5; i++) {
 			//同步方式发送消息
-			ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>("topic-replica-dl", 0,
-					Integer.toString(i), Integer.toString(i));
-			/*Future<RecordMetadata> result = producer.send(producerRecord);
+			ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>("topic-replica-dl-1", 0,Integer.toString(i), Integer.toString(i));
+//			Future<RecordMetadata> result = producer.send(producerRecord);
 			//等待消息发送成功的同步阻塞方法
-			RecordMetadata metadata = result.get();
-			System.out.println("同步方式发送消息结果：" + "topic-" + metadata.topic() + "|partition-"
-			        + metadata.partition() + "|offset-" + metadata.offset());*/
+//			RecordMetadata metadata = result.get();
+//			System.out.println("同步方式发送消息结果：" + "topic-" + metadata.topic() + "|partition-"
+//			        + metadata.partition() + "|offset-" + metadata.offset());
 
 			//异步方式发送消息
 			producer.send(producerRecord, new Callback() {
@@ -34,7 +34,7 @@ public class MsgProducer {
 				public void onCompletion(RecordMetadata metadata, Exception exception) {
 					if (exception != null) {
 						System.err.println("发送消息失败：" + exception.getStackTrace());
-						
+
 					}
 					if (metadata != null) {
 						System.out.println("异步方式发送消息结果：" + "topic-" + metadata.topic() + "|partition-"

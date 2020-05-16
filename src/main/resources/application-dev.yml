@@ -1,0 +1,314 @@
+management:
+  security:
+    enabled: false
+endpoints:
+  enabled: false
+  prometheus:
+    enabled: true
+    path: /prometheus
+
+vehicleAlarmChannel:
+  common:
+    appId: 1
+
+  rest:
+    defaultConnectionRequestTimeout: 3000
+    defaultConnectTimeout: 3000
+    defaultReadTimeout: 3000
+    defaultMaxConnectionTotal: 8192
+    defaultMaxConnectionPerRoute: 256
+    profileInstance:
+      connectionRequestTimeout: 3000
+      connectTimeout: 3000
+      readTimeout: 3000
+      maxConnectionTotal: 8192
+      maxConnectionPerRoute: 256
+    pushInstance:
+      connectionRequestTimeout: 3000
+      connectTimeout: 3000
+      readTimeout: 3000
+      maxConnectionTotal: 8192
+      maxConnectionPerRoute: 256
+    bssInstance:
+      connectionRequestTimeout: 3000
+      connectTimeout: 3000
+      readTimeout: 3000
+      maxConnectionTotal: 8192
+      maxConnectionPerRoute: 256
+
+  kafka:
+    vehicleAlarmInstance:
+      bootstrapServers: 10.0.3.12:9092
+      topic: vehicle-alarm
+      producer:
+        acks: 1
+        batchSize: 16384
+        bufferMemory: 33554432
+        lingerMs: 1
+        retries: 0
+        maxBlockMs: 60000
+        clientId: vehicleAlarmChannelProducer
+        compressionType: none
+        keySerializer: org.apache.kafka.common.serialization.StringSerializer
+        valueSerializer: org.apache.kafka.common.serialization.StringSerializer
+      consumer:
+        groupId: vehicleAlarmGroup
+        autoOffsetReset: latest
+        enableAutoCommit: false
+        autoCommitIntervalMs: 5000
+        heartbeatIntervalMs: 3000
+        sessionTimeoutMs: 10000
+        fetchMaxWaitMs: 500
+        fetchMinBytes: 1
+        maxPollRecords: 500
+        maxPollIntervalMs: 300000
+        clientId: vehicleAlarmChannelConsumer
+        keyDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+        valueDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+      listener:
+        concurrency: 1
+        pollTimeout: 1000
+        syncCommits: true
+        ackOnError: true
+        ackMode: MANUAL
+        ackCount: 1
+        ackTime: 5000
+        throttlingSize: 256
+    electricFenceInstance:
+      bootstrapServers: 10.0.3.12:9092
+      topic: electric-fence
+      producer:
+        acks: 1
+        batchSize: 16384
+        bufferMemory: 33554432
+        lingerMs: 1
+        retries: 0
+        maxBlockMs: 60000
+        clientId: electricFenceProducer
+        compressionType: none
+        keySerializer: org.apache.kafka.common.serialization.StringSerializer
+        valueSerializer: org.apache.kafka.common.serialization.StringSerializer
+      consumer:
+        groupId: electricFenceGroup
+        autoOffsetReset: latest
+        enableAutoCommit: false
+        autoCommitIntervalMs: 5000
+        heartbeatIntervalMs: 3000
+        sessionTimeoutMs: 10000
+        fetchMaxWaitMs: 500
+        fetchMinBytes: 1
+        maxPollRecords: 500
+        maxPollIntervalMs: 300000
+        clientId: electricFenceConsumer
+        keyDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+        valueDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+      listener:
+        concurrency: 1
+        pollTimeout: 1000
+        syncCommits: true
+        ackOnError: true
+        ackMode: MANUAL
+        ackCount: 1
+        ackTime: 5000
+        throttlingSize: 256
+
+  profile:
+    appId: 1
+    officialAccountAppId: wxa121095e4a8ae523
+    profileRelationChainQueryEndpoint: http://account-core-service/v1/relation/chain/query
+    profileRelationChainQueryV2Endpoint: http://account-core-service/v2/relation/query
+    profileRelationQueryAndGetV2Endpoint: http://account-core-service/v2/relation/query_and_get
+    accountGetPhoneEndpoint: http://account-core-service/v1/account/inner/get_phone
+    accountGetAssociatedAccountIdEndpoint: http://account-core-service/v1/account/inner/get_access_token
+
+  push:
+    vappid: 1
+    alarmConfig:
+      {
+        208-0-2: 车辆位置异常移动,
+        203-0-2: 电压过低,
+        203-0-3: 电压过高,
+        208-0-1: 触发车身防盗,
+        1-0-2: 车门未锁,
+        202-0-1: 引擎未关,
+        101-0-1: 空调未关,
+        101-0-2: 空调达到远程设置温度,
+        5-1-1: 前舱盖未关,
+        5-2-1: 后舱盖未关,
+        2-0-1: 车窗未关,
+        3-0-1: 天窗未关,
+        7-9-1: 驻车灯未关,
+        210-0-6: 充电成功,
+        210-0-7: 充电失败,
+        210-0-3: 充电枪未插入,
+        210-0-4: 动力源未关闭,
+        210-0-5: 高压未退电,
+        210-0-1: 充电故障,
+        302-8-1: 整车控制系统异常,
+        302-10-1: 驱动电机系统异常,
+        302-16-1: 电池系统异常,
+        302-14-1: 充电机异常,
+        302-13-1: DC/DC异常,
+        302-9-1: 耦合控制系统异常,
+        302-17-1: 发电机系统异常,
+        201-0-1: 整车电源未关闭,
+        203-2-1: 高压电池电量低,
+        302-15-1: 热管理系统异常,
+        1-2-1: 乘客门未关,
+        1-1-1: 司机门未关,
+        203-2-6: 动力电池严重故障,
+        305-0-0: 热失效,
+        203-1-1: 12V电池电量低,建议尽快启动车辆,
+        203-2-7: 动力电池预冷/预热执行条件不满足,
+        203-2-8: 动力电池预冷/预热执行中,
+        203-2-9: 动力电池预冷/预热终止,
+        203-2-10: 动力电池预冷/预热已完成,
+        203-2-11: 动力电池预冷/预热取消成功,
+        207-0-3: 胎压低,
+        207-0-6: 胎压传感器故障,
+        207-0-7: TPMS静态监控已关闭,
+        306-0-1: 12V充电完成,
+        306-0-2: 12V充电失败,
+        210-0-8: 动力电池充电失败,
+        210-0-9: 动力电池充电保温失败,
+        307-0-0: 真空信号卡滞
+      }
+    app:
+      moduleId: 5
+        #      alarmEvents: 208-0-1, 210-0-3, 210-0-7, 203-1-1, 306-0-1, 306-0-2
+      alarmEvents:
+        {
+          208-0-1:86400000,  #//  limit 时长单位ms（1天）
+          207-0-6:86400000,
+          207-0-7:86400000,
+          203-1-1:86400000,
+          306-0-1:86400000
+          306-0-2:86400000
+        }
+      appPushEndpoint: http://iov-notification/v1/app/push_notification
+      vehicleAlarmTemplate:
+        templateName: vehicle_app_alarm
+        rcvClientTypes: android, ios
+        onlineOnly: 0
+        lifeTime: 172800
+        title: 车辆告警
+        text: 车辆告警通知
+        userdef: {}
+    sms:
+      moduleId: 5
+      #      limit: 86400000
+      #      alarmEvents: 208-0-1, 203-1-1, 207-0-3, 207-0-6
+      alarmEvents:
+      {
+        208-0-1:86400000, #//  limit 时长单位ms（1天）
+        203-1-1:86400000,
+        207-0-3:86400000,
+        207-0-6:86400000
+      }
+      smsPushEndpoint: http://iov-notification/v1/sms/push_notification_single
+      vehicleAlarmTemplate:
+        templateName: vehicle_sms_alarm
+        #textFormat: 您的车辆{1}{2}，{3}。
+        maxWordLength: 38
+        nationCode: 86
+      vehicleAlarmTemplate2:
+        templateName: vehicle_sms_alarm2
+        #textFormat: 尊敬的用户：车联助手监测到您的爱车{1}，为确保您爱车正常使用，{2}。
+        maxWordLength: 38
+        nationCode: 86
+    wechat:
+      moduleId: 5
+      alarmEvents:
+      wechatPushEndpoint: http://iov-notification/v1/wechat/push_notification_single
+      vehicleAlarmTemplate:
+        templateName: vehicle_wechat_alarm
+        #textFormat: {{first.DATA}}告警车辆：{{keyword1.DATA}}告警时间：{{keyword2.DATA}}告警内容：{{keyword2.DATA}}{{remark.DATA}}
+        firstContentValue: 尊敬的车主，您的爱车产生了一条告警信息。
+        remarkContentValue:
+      vehicleAlarmTemplate2:
+        templateName: vehicle_wechat_notify
+        #textFormat: {{first.DATA}}内容：{{keyword1.DATA}}创建时间：{{keyword2.DATA}}{{remark.DATA}}
+        firstContentValue: 尊敬的车主，收到一条执行成功通知。
+        remarkContentValue:
+    email:
+      moduleId: 5
+      alarmEvents:
+      emailPushEndpoint: http://iov-notification/v1/mail/push_notification
+      vehicleAlarmTemplate:
+        templateName: vehicle_email_alarm
+        title: 车辆告警通知
+    platformDispatch:
+      - {
+        #广出行
+        clientIds: ["4733454641"],
+        alarmEvents: ["208-0-2"],
+        eventId: 6
+      }
+    monitor:
+      moduleId: 5
+      monitorEvents: 305-0-0
+      vehicleCountOnlySms: 2
+      smsPushEndpoint: http://iov-notification/v1/sms/push_notification_single
+      smsTemplateSignal:
+        templateName: vehicle_sms_signal
+        #textFormat: {1}在{2}发生{3}，位置：{4}。
+        maxWordLength: 38
+        nationCode: 86
+      smsTemplateMulti:
+        templateName: vehicle_sms_multi
+        #textFormat: 有多辆车发生发生{1}，详情请查收告警邮件。
+        maxWordLength: 38
+        nationCode: 86
+      emailPushEndpoint: http://iov-notification/v1/mail/push_notification
+      maxCountShowInMail: 100
+      emailTemplate:
+        templateName: vehicle_email_monitor
+        #textFormat: {{content}}。
+        title: 车辆告警通知
+      maps:
+        {
+          id1: {series: [], watcherTels: [], watcherEmails: []}
+        }
+    electricFence:
+      smsTemplate:
+        templateName: electric_fence_sms
+        #textFormat: 电子围栏-{1}：时间-{2}，车辆-{3}，事件-{4}，位置-{5}。
+        maxWordLength: 38
+        nationCode: 86
+    operationConfig:
+      contentTemplate: "告警: {alarm}，VIN: {vin}，时间: {time}，地点: {gps}。"
+      emailTemplate:
+        templateName: vehicle_email_monitor
+        #textFormat: {{content}}。
+        title: 车辆告警通知
+      smsTemplate:
+        templateName: vehicle_sms_operation
+        maxWordLength: 38
+        nationCode: 86
+      groups:
+        - {
+          id: 1,
+          events: ["307-0-0"],
+          smsLimit: 86400000, #1天
+          phones: [],
+          mailLimit: 86400000, #1天
+          mails: []
+        }
+
+  redis:
+    address: redis://10.1.1.16:6379
+    password: crs-gdugkvu4:Sirun@2018
+    database: 4
+    connectionPoolSize: 64
+    connectionMinimumIdleSize: 8
+    connectTimeout: 3000
+    timeout: 3000
+    retryAttempts: 3
+    retryInterval: 300
+    threads: 0
+    nettyThreads: 4
+
+statsd:
+  host: 10.2.0.62
+  port: 8125
+  prefix: ${spring.application.name}

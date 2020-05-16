@@ -17,7 +17,7 @@ public class TopicConfig {
     @Bean
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "119.27.183.30:9092");
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "cdh-datanode1:9092,cdh-datanode2:9092,cdh-datanode3:9092");
         return new KafkaAdmin(configs);
     }
 
@@ -27,21 +27,21 @@ public class TopicConfig {
         //当broker个数为1个时会创建topic失败，
         //提示：replication factor: 2 larger than available brokers: 1
         //只有在集群中才能使用kafka的备份功能
-        return new NewTopic("foo", 10, (short) 1);
+        return new NewTopic("foo", 3, (short) 1);
     }
 
     @Bean
     public NewTopic bar() {
-        return new NewTopic("bar", 10, (short) 1);
+        return new NewTopic("bar", 3, (short) 1);
     }
 
     @Bean
     public NewTopic topic1(){
-        return new NewTopic("topic1", 10, (short) 1);
+        return new NewTopic("topic1", 3, (short) 1);
     }
 
     @Bean
     public NewTopic topic2(){
-        return new NewTopic("topic2", 10, (short) 1);
+        return new NewTopic("topic2", 3, (short) 1);
     }
 }
