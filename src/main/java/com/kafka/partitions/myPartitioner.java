@@ -28,8 +28,14 @@ public class myPartitioner implements Partitioner {
         if(((keyBytes == null) || (!(key instanceof  String)))){
             throw new InvalidRecordException("we expect all messages to have customer name as key");
         }
-        if((key).equals("Banana")){
-            return numPartitions;
+        if(((String) key).startsWith("A")){
+            return 0;
+        }
+        if(((String) key).startsWith("B")){
+            return 1;
+        }
+        if(((String) key).startsWith("C")){
+            return 2;
         }
 
         //其他记录被散列到其他分区

@@ -52,7 +52,7 @@ public class kafkaProducer {
 
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer<String, String>(props);
         //发送消息3种方式
-        ProducerRecord<String,String> record = new ProducerRecord<>("CustomerCountry","A Precision Products","France");
+        ProducerRecord<String,String> record = new ProducerRecord<>("CustomerCountry","C Precision Products","France");
         //1.发送并忘记
         try {
             kafkaProducer.send(record);
